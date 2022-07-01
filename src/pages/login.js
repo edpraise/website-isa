@@ -1,7 +1,36 @@
 import React from "react";
 import Head from "next/head";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
+import { auth } from "../firebase";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
 
 function Login() {
+  const router = useRouter();
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(email, password);
+    // sign in with firebase
+
+    try {
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      const user = res.user;
+      localStorage.setItem("accessToken", user.accessToken);
+      localStorage.setItem("isAdmin", true);
+      router.push("/admin");
+    } catch (error) {
+      console.log("error");
+      toast.error(error.message);
+      console.log(error);
+    }
+  };
   return (
     <>
       <Head>
@@ -52,6 +81,8 @@ function Login() {
                 <input
                   className="input100"
                   type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   name="email"
                   placeholder="Email"
                 />
@@ -66,6 +97,8 @@ function Login() {
                 data-validate="Password is required"
               >
                 <input
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="input100"
                   type="password"
                   name="pass"
@@ -78,7 +111,9 @@ function Login() {
               </div>
 
               <div className="container-login100-form-btn">
-                <button className="login100-form-btn">Login</button>
+                <button className="login100-form-btn" onClick={handleSubmit}>
+                  Login
+                </button>
               </div>
 
               <div
