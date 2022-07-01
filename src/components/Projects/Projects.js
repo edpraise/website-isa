@@ -32,7 +32,7 @@ const Projects = () => (
   <GridContainer>
     {projects.map(({id, image,title, description, tags, source, visit})=>(
     <BlogCard key={projects.id}>
-      <img src= {image}/>
+      <img src= {image} style={{width: "100%"}}/>
       <TitleContent>
         <HeaderThree title>{title}
 
