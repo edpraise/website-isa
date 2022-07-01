@@ -33,6 +33,11 @@ function admin() {
       // get all posts
       //   const posts = await getDocs(db, "posts");
       console.log(posts);
+      setTitle("");
+      setDescription("");
+      setImgUrl("");
+      setTags("");
+      toast.success("Post added successfully");
     } catch (err) {
       console.log(err);
     }
